@@ -3,25 +3,25 @@ import java.awt.Image;
 import java.awt.event.KeyEvent;
 import javax.swing.ImageIcon;
 import java.util.HashMap;
-import java.util.Map;
-public class Player {
-    int screenWidth;
-	int screenHeight;
+import java.util.Vector;
+
+public class Player 
+{
 	private Image playerImage;
 	private ImageIcon playerSrc;
-	int playerWidth;
-	int playerHeight;
-	int playerCx=500;
-	int playerCy=300;
-	int px,py;
-	int speed=3;
-
+	private int playerWidth;
+	private int playerHeight;
+	private int playerCx=500;
+	private int playerCy=300;
+	private int px,py;
+	private int speed=3;
+	
+	int tempX,tempY;
+	Vector<Bullet> bullets;
 	HashMap<String, Integer> spriteState = new HashMap<String, Integer>(); 
 	
-	Player(int w, int h)
+	Player()
 	{
-		screenWidth = w;
-		screenHeight = h;
 		load();
 	}
 	public void checkSprite()
@@ -47,7 +47,7 @@ public class Player {
 		spriteState.put("DOWN",0);
 
 		checkSprite();
-		
+		bullets = new Vector<>();
 		playerWidth = playerImage.getWidth(null);
 		playerHeight = playerImage.getHeight(null);
 	}
@@ -60,30 +60,24 @@ public class Player {
 	{
 		if(playerCx < 0)
 		{
-			System.out.println("너 가로 나감.");
 			playerCx = 0;
 		}
 		if(playerCx>950)
 		{
-			System.out.println("너 가로 나감.");
 			playerCx = 950;
 		}
-//		System.out.println("x="+playerCx);
 		return playerCx;
 	}
 	public int getY()
 	{
 		if(playerCy < -3)
 		{
-			System.out.println("너 세로 나감.");
 			playerCy = 0;
 		}
 		if(playerCy>540)
 		{
-			System.out.println("너 세로 나감.");
 			playerCy = 540;
 		}
-//		System.out.println("y="+playerCy);
 		return playerCy;
 	}
 	public int getWidth()
@@ -98,51 +92,68 @@ public class Player {
 	{
 		return playerImage;
 	}
+	public Vector<Bullet> getBullet()
+	{
+		return bullets;
+	}
     public void keyPressed(KeyEvent e) 
     {
-
         int key = e.getKeyCode();
-
-        if (key == KeyEvent.VK_LEFT) {
+        
+        if (key == KeyEvent.VK_LEFT) 
+        {
             px = -speed;
         }
-        if (key == KeyEvent.VK_RIGHT) {
+        if (key == KeyEvent.VK_RIGHT) 
+        {
             px = speed;
         }
-        if (key == KeyEvent.VK_UP) {
+        if (key == KeyEvent.VK_UP) 
+        {
             py = -speed;
     		spriteState.put("STAY",0);
     		spriteState.put("UP",1);
     		spriteState.put("DOWN",0);
     		checkSprite();
         }
-        if (key == KeyEvent.VK_DOWN) {
+        if (key == KeyEvent.VK_DOWN) 
+        {
             py = speed;
     		spriteState.put("STAY",0);
     		spriteState.put("UP",0);
     		spriteState.put("DOWN",1);
     		checkSprite();
         }
+        if (key == KeyEvent.VK_SPACE) 
+        {
+        	tempX = playerCx;
+        	tempY = playerCy;
+        	bullets.add(new Bullet(tempX,tempY));
+        }
+        
     }
     public void keyReleased(KeyEvent e) 
     {
-        
         int key = e.getKeyCode();
 
-        if (key == KeyEvent.VK_LEFT) {
+        if (key == KeyEvent.VK_LEFT) 
+        {
             px = 0;
         }
-        if (key == KeyEvent.VK_RIGHT) {
+        if (key == KeyEvent.VK_RIGHT) 
+        {
             px = 0;
         }
-        if (key == KeyEvent.VK_UP) {
+        if (key == KeyEvent.VK_UP) 
+        {
             py = 0;
     		spriteState.put("STAY",1);
     		spriteState.put("UP",0);
     		spriteState.put("DOWN",0);
     		checkSprite();
         }
-        if (key == KeyEvent.VK_DOWN) {
+        if (key == KeyEvent.VK_DOWN) 
+        {
             py = 0;
     		spriteState.put("STAY",1);
     		spriteState.put("UP",0);
