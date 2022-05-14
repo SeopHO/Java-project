@@ -1,20 +1,22 @@
 package gamegame;
 
-import java.awt.EventQueue;
-
+//import java.awt.EventQueue;
 import javax.swing.JFrame;
 
 public class Game extends JFrame {
-	final int SCREEN_WIDTH = 1000;
-	final int SCREEN_HEIGHT = 600;
-    public Game() {
+	private final int SCREEN_WIDTH = 1000;
+	private final int SCREEN_HEIGHT = 600;
+	
+    public Game() 
+    {
         initUI();
     }
     
-    private void initUI() {
-        add(new Screen(SCREEN_WIDTH,SCREEN_HEIGHT));
+    private void initUI() 
+    {
+        add(new Screen());
 
-        setTitle("Moving sprite");
+        setTitle("test");
         setSize(SCREEN_WIDTH, SCREEN_HEIGHT);
         
         setLocationRelativeTo(null);
@@ -22,7 +24,8 @@ public class Game extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) 
+    {
 //        EventQueue.invokeLater(() -> {
 //        	Game game = new Game();
 //        	game.setVisible(true); //화면이 보이도록 한다.
