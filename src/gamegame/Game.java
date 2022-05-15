@@ -1,6 +1,5 @@
 package gamegame;
 
-//import java.awt.EventQueue;
 import javax.swing.JFrame;
 
 public class Game extends JFrame {
@@ -26,10 +25,6 @@ public class Game extends JFrame {
 
     public static void main(String[] args) 
     {
-//        EventQueue.invokeLater(() -> {
-//        	Game game = new Game();
-//        	game.setVisible(true); //화면이 보이도록 한다.
-//        });
     	Game game = new Game();
     	game.setVisible(true); //화면이 보이도록 한다.
     }
