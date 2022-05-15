@@ -1,16 +1,16 @@
 package gamegame;
+
 import java.awt.Image;
 import javax.swing.ImageIcon;
 
 public class Bullet {
 	private Image bulletImage;
 	private ImageIcon bulletSrc;
-	private Player player;
 	private int bulletCx;
 	private int bulletCy;
 	private int bulletWidth;
 	private int bulletHeight;
-	private int bulletSpeed = 5;
+	private int bulletSpeed = 10;
 	public boolean bulletReady;
 	
 	Bullet(int x, int y)
@@ -58,7 +58,7 @@ public class Bullet {
 	public void move()
 	{
 		bulletCx+=bulletSpeed;
-		if(bulletCx>950)
+		if((bulletCx>950))
 		{
 			bulletReady = false;
 		}
