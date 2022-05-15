@@ -8,8 +8,10 @@ public class Enemy {
 	private ImageIcon EnemySrc;
 	private int EnemyWidth;
 	private int EnemyHeight;
-	private int EnemyCx=650;
-	private int EnemyCy=60;
+	private int EnemyCx=500;
+	private int EnemyCy=100;
+	public int hp=990;
+	private boolean checkDead;
 	Enemy()
 	{
 		load();
@@ -20,6 +22,7 @@ public class Enemy {
 		EnemyImage = EnemySrc.getImage();
 		EnemyWidth = EnemyImage.getWidth(null);
 		EnemyHeight = EnemyImage.getHeight(null);
+		
 	}
 	public int getX()
 	{
@@ -31,16 +34,23 @@ public class Enemy {
 	}
 	public int getWidth()
 	{
-		System.out.println(EnemyWidth);
 	  	return EnemyWidth;
 	}
 	public int getHeight()
 	{
-		System.out.println(EnemyHeight);
 		return EnemyHeight;
 	}
 	public Image getImage()
 	{
 		return EnemyImage;
 	}
+	public int getHp()
+	{
+		return hp;
+	}
+	public boolean IsDead()
+	{
+		return checkDead;
+	}
+
 }
