@@ -1,5 +1,6 @@
 package gamegame;
 import java.awt.Image;
+
 import java.awt.event.KeyEvent;
 import javax.swing.ImageIcon;
 import java.util.HashMap;
@@ -11,10 +12,11 @@ public class Player
 	private ImageIcon playerSrc;
 	private int playerWidth;
 	private int playerHeight;
-	private int playerCx=500;
-	private int playerCy=300;
+	private int playerCx=100;
+	private int playerCy=200;
 	private int px,py;
 	private int speed=3;
+	public boolean conflict=false;
 	
 	int tempX,tempY;
 	Vector<Bullet> bullets;
@@ -92,6 +94,10 @@ public class Player
 	{
 		return playerImage;
 	}
+	public boolean IsDead()
+	{
+		return conflict;
+	}
 	public Vector<Bullet> getBullet()
 	{
 		return bullets;
@@ -100,7 +106,7 @@ public class Player
     {
         int key = e.getKeyCode();
         
-        if (key == KeyEvent.VK_LEFT) 
+        if (key == KeyEvent.VK_LEFT)  
         {
             px = -speed;
         }
