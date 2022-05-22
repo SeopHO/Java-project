@@ -8,8 +8,8 @@ public class Enemy {
 	private ImageIcon EnemySrc;
 	private int EnemyWidth;
 	private int EnemyHeight;
-	private int EnemyCx=500;
-	private int EnemyCy=100;
+	public int EnemyCx=500; //x=500,y=100 center
+	public int EnemyCy=100;
 	public int hp=990;
 	private boolean checkDead;
 	Enemy()
@@ -22,7 +22,6 @@ public class Enemy {
 		EnemyImage = EnemySrc.getImage();
 		EnemyWidth = EnemyImage.getWidth(null);
 		EnemyHeight = EnemyImage.getHeight(null);
-		
 	}
 	public int getX()
 	{

@@ -17,6 +17,7 @@ public class Player
 	private int px,py;
 	private int speed=3;
 	public boolean conflict=false;
+
 	
 	int tempX,tempY;
 	Vector<Bullet> bullets;
