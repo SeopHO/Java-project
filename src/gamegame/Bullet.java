@@ -22,7 +22,7 @@ public class Bullet {
 	}
 	public void load()
 	{
-		bulletSrc = new ImageIcon("src/image/bulletSprite.png");
+		bulletSrc = new ImageIcon("src/image/bulletSprite_2.png");
 		bulletImage = bulletSrc.getImage();
 		bulletWidth = bulletImage.getWidth(null);
 		bulletHeight = bulletImage.getHeight(null);
@@ -58,7 +58,7 @@ public class Bullet {
 	public void move()
 	{
 		bulletCx+=bulletSpeed;
-		if((bulletCx>950))
+		if((bulletCx>Game.SCREEN_WIDTH))
 		{
 			bulletReady = false;
 		}

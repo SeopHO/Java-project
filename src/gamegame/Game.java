@@ -5,11 +5,12 @@ import java.awt.event.KeyEvent;
 import javax.swing.JFrame;
 
 public class Game extends JFrame {
-	private final int SCREEN_WIDTH = 1000;
-	private final int SCREEN_HEIGHT = 600;
+	public final static int SCREEN_WIDTH = 1000;
+	public final static int SCREEN_HEIGHT = 600;
     public static int ScreenState;
     private titleScreen titlePanel;
     private InGameScreen inGamePanel;
+    private DeadScreen deadPanel;
     public Game() 
     {
     	ScreenState = 0;
@@ -32,7 +33,6 @@ public class Game extends JFrame {
     	{     
     		case 0:
     			getContentPane().removeAll();
-    			inGamePanel = null;
     			getContentPane().add(titlePanel = new titleScreen());
     			setVisible(true); 
                 revalidate();
@@ -58,6 +58,24 @@ public class Game extends JFrame {
         	if(ScreenState == 1)
         	{
         		inGamePanel.player.keyPressed(e);
+        		if(inGamePanel.player.conflict)
+        		{
+                   	if(key == KeyEvent.VK_R)
+                	{
+                   		inGamePanel.player.conflict = false;
+                   		inGamePanel.timer.stop();
+                   		inGamePanel.timeCnt = 0;
+                   		inGamePanel.deadCnt = 0;
+                   		inGamePanel.player = null;
+                   		inGamePanel.boss = null;
+                   		inGamePanel.pattern = null;
+                   		inGamePanel.deadTitle = null;
+                   		EnemyPattern.bossAppear = false;
+                   		inGamePanel = null;
+                   		ScreenState = 0;
+                   		checkScreenState(ScreenState);
+                	}
+        		}
         	}
             if (key == KeyEvent.VK_SPACE) 
             {
@@ -66,7 +84,6 @@ public class Game extends JFrame {
             		ScreenState=1;
             		checkScreenState(ScreenState);
             	}
-
             }
             if (key == KeyEvent.VK_ESCAPE) 
             {
@@ -79,7 +96,6 @@ public class Game extends JFrame {
             		ScreenState=0;
             		checkScreenState(ScreenState);
             	}
-                
             }
         }
         public void keyReleased(KeyEvent e) 

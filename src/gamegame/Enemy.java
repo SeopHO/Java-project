@@ -1,27 +1,57 @@
 package gamegame;
 
-import java.awt.Image;
-import javax.swing.ImageIcon;
+import java.awt.Color;
 
-public class Enemy {
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Image;
+import java.util.Vector;
+
+import javax.swing.ImageIcon;
+import javax.swing.JPanel;
+
+public class Enemy{
 	private Image EnemyImage;
 	private ImageIcon EnemySrc;
 	private int EnemyWidth;
 	private int EnemyHeight;
-	public int EnemyCx=500; //x=500,y=100 center
-	public int EnemyCy=100;
-	public int hp=990;
+	
+	public int HP = 990;
+	
+	public final int LEFT_TOP_X = 30;
+	public final int LEFT_TOP_Y = 50;
+	public final int LEFT_BOTTOM_X = 30;
+	public final int LEFT_BOTTOM_Y = 250;
+	
+	public final int RIGHT_TOP_X = 750;
+	public final int RIGHT_TOP_Y = 50;
+	public final int RIGHT_BOTTOM_X = 750;
+	public final int RIGHT_BOTTOM_Y = 250;
+	
+	public final int CENTER_X = 750;
+	public final int CENTER_Y = 145;
+	
+	public int EnemyCx= RIGHT_TOP_X-114;
+	public int EnemyCy= RIGHT_TOP_Y;
+	
 	private boolean checkDead;
+	
+
+	
 	Enemy()
 	{
 		load();
 	}
 	public void load()
 	{
-		EnemySrc = new ImageIcon("src/image/bossResize.jpg");
-		EnemyImage = EnemySrc.getImage();
+		loadImage_default();
 		EnemyWidth = EnemyImage.getWidth(null);
 		EnemyHeight = EnemyImage.getHeight(null);
+	}
+	public void loadImage_default()
+	{
+		EnemySrc = new ImageIcon("src/image/bossResize.jpg");
+		EnemyImage = EnemySrc.getImage();
 	}
 	public int getX()
 	{
@@ -45,11 +75,11 @@ public class Enemy {
 	}
 	public int getHp()
 	{
-		return hp;
-	}
-	public boolean IsDead()
-	{
-		return checkDead;
+		return HP;
 	}
 
+	
+
 }
+
+

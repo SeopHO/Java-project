@@ -6,7 +6,7 @@ import javax.swing.ImageIcon;
 import java.util.HashMap;
 import java.util.Vector;
 
-public class Player 
+public class Player
 {
 	private Image playerImage;
 	private ImageIcon playerSrc;
@@ -42,6 +42,34 @@ public class Player
 			playerSrc = new ImageIcon("src/image/playerSprite2.png");
 		}
 		playerImage = playerSrc.getImage();
+	}
+	public void dead(int cnt)
+	{
+		if(cnt == 0)
+		{
+			playerSrc = new ImageIcon("src/image/playerDead_1.png");
+			playerImage = playerSrc.getImage();
+		}
+		if(cnt == 10)
+		{
+			playerSrc = new ImageIcon("src/image/playerDead_2.png");
+			playerImage = playerSrc.getImage();
+		}
+		if(cnt == 20)
+		{
+			playerSrc = new ImageIcon("src/image/playerDead_3.png");
+			playerImage = playerSrc.getImage();
+		}
+		if(cnt == 30)
+		{
+			playerSrc = new ImageIcon("src/image/playerDead_4.png");
+			playerImage = playerSrc.getImage();
+		}
+		if(cnt == 40)
+		{
+			playerSrc = new ImageIcon("src/image/playerDead_5.png");
+			playerImage = playerSrc.getImage();
+		}
 	}
 	public void load()
 	{
@@ -95,10 +123,6 @@ public class Player
 	{
 		return playerImage;
 	}
-	public boolean IsDead()
-	{
-		return conflict;
-	}
 	public Vector<Bullet> getBullet()
 	{
 		return bullets;
@@ -106,66 +130,80 @@ public class Player
     public void keyPressed(KeyEvent e) 
     {
         int key = e.getKeyCode();
-        
-        if (key == KeyEvent.VK_LEFT)  
+        if(conflict!=true)
         {
-            px = -speed;
+            if (key == KeyEvent.VK_LEFT)  
+            {
+                px = -speed;
+            }
+            if (key == KeyEvent.VK_RIGHT) 
+            {
+                px = speed;
+            }
+            if (key == KeyEvent.VK_UP) 
+            {
+                py = -speed;
+        		spriteState.put("STAY",0);
+        		spriteState.put("UP",1);
+        		spriteState.put("DOWN",0);
+        		checkSprite();
+            }
+            if (key == KeyEvent.VK_DOWN) 
+            {
+                py = speed;
+        		spriteState.put("STAY",0);
+        		spriteState.put("UP",0);
+        		spriteState.put("DOWN",1);
+        		checkSprite();
+            }
+            if (key == KeyEvent.VK_SPACE) 
+            {
+            	tempX = playerCx;
+            	tempY = playerCy;
+            	bullets.add(new Bullet(tempX,tempY));
+            }
         }
-        if (key == KeyEvent.VK_RIGHT) 
+        else
         {
-            px = speed;
+        	px = 0;
+        	py = 0;
         }
-        if (key == KeyEvent.VK_UP) 
-        {
-            py = -speed;
-    		spriteState.put("STAY",0);
-    		spriteState.put("UP",1);
-    		spriteState.put("DOWN",0);
-    		checkSprite();
-        }
-        if (key == KeyEvent.VK_DOWN) 
-        {
-            py = speed;
-    		spriteState.put("STAY",0);
-    		spriteState.put("UP",0);
-    		spriteState.put("DOWN",1);
-    		checkSprite();
-        }
-        if (key == KeyEvent.VK_SPACE) 
-        {
-        	tempX = playerCx;
-        	tempY = playerCy;
-        	bullets.add(new Bullet(tempX,tempY));
-        }
-        
     }
     public void keyReleased(KeyEvent e) 
     {
         int key = e.getKeyCode();
+        if(conflict!=true)
+        {
+            if (key == KeyEvent.VK_LEFT) 
+            {
+                px = 0;
+            }
+            if (key == KeyEvent.VK_RIGHT) 
+            {
+                px = 0;
+            }
+            if (key == KeyEvent.VK_UP) 
+            {
+                py = 0;
+        		spriteState.put("STAY",1);
+        		spriteState.put("UP",0);
+        		spriteState.put("DOWN",0);
+        		checkSprite();
+            }
+            if (key == KeyEvent.VK_DOWN) 
+            {
+                py = 0;
+        		spriteState.put("STAY",1);
+        		spriteState.put("UP",0);
+        		spriteState.put("DOWN",0);
+        		checkSprite();
+            }
+        }
+        else
+        {
+        	px = 0;
+        	py = 0;
+        }
 
-        if (key == KeyEvent.VK_LEFT) 
-        {
-            px = 0;
-        }
-        if (key == KeyEvent.VK_RIGHT) 
-        {
-            px = 0;
-        }
-        if (key == KeyEvent.VK_UP) 
-        {
-            py = 0;
-    		spriteState.put("STAY",1);
-    		spriteState.put("UP",0);
-    		spriteState.put("DOWN",0);
-    		checkSprite();
-        }
-        if (key == KeyEvent.VK_DOWN) 
-        {
-            py = 0;
-    		spriteState.put("STAY",1);
-    		spriteState.put("UP",0);
-    		spriteState.put("DOWN",0);
-    		checkSprite();
-        }
     }
 }
