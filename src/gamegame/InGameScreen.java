@@ -17,8 +17,9 @@ import javax.swing.Timer;
 
 public class InGameScreen extends JPanel implements ActionListener{
     public Timer timer;
-    public int timeCnt=0;
+    public static int timeCnt=0;
     public int deadCnt=0;
+    public EnemyAppearance enemyAppearance = null;
     public Player player=null;
     public Enemy boss=null;
     public EnemyPattern pattern;
@@ -29,6 +30,8 @@ public class InGameScreen extends JPanel implements ActionListener{
 	{
 		setBackground(Color.black);
         player = new Player(); 
+    	enemyAppearance = new EnemyAppearance();
+    	System.out.println(EnemyAppearance.EnemyAppearanceCheck);
         timer = new Timer(DELAY, this);
         timer.start();
 	}
@@ -42,33 +45,20 @@ public class InGameScreen extends JPanel implements ActionListener{
     {
         Graphics2D graphic = (Graphics2D) g;
         //draw Player
-        drawPlayer(graphic);
+        doDrawingPlayer(graphic);
+        //draw Appearance Boss
+        if(EnemyAppearance.EnemyAppearanceCheck)
+        {
+        	doDrawingAppearanceBoss(graphic);
+        }
         //draw Boss
-        if(EnemyPattern.bossAppear)
+        if(Enemy.bossAppear)
         {
             doDrawingBoss(graphic);
         	doDrawingBossBar(graphic);
         }
-        //draw Bullet
-        Vector<Bullet> bullets = player.getBullet();
-        for(Bullet bullet:bullets) 
-        {
-            graphic.drawImage(bullet.getImage(), 
-            		bullet.getX(), 
-            		bullet.getY(), 
-            		this);
-        }
-
-        //draw Enemy
-        if(timeCnt==100)
-        {
-        	boss = new Enemy();
-        	pattern = new EnemyPattern(boss,player);
-        	pattern.start();
-        	EnemyPattern.bossAppear=true;
-        }
-        //draw EnemyBullet
-        if(EnemyPattern.bossAppear)
+        //draw Boss Bullet
+        if(Enemy.bossAppear) 
         {
             Vector<EnemyBullet> Enemybullets = pattern.getBullet();
             for(EnemyBullet Enemybullet:Enemybullets) 
@@ -77,9 +67,19 @@ public class InGameScreen extends JPanel implements ActionListener{
                 		Enemybullet.getX(), 
                 		Enemybullet.getY(), 
                 		this);
+                
             }
-        }
 
+        }
+        //draw player Bullet
+        Vector<Bullet> bullets = player.getBullet();
+        for(Bullet bullet:bullets) 
+        {
+            graphic.drawImage(bullet.getImage(), 
+            		bullet.getX(), 
+            		bullet.getY(), 
+            		this);
+        }
         //draw deadScreen
         if(player.conflict == true)
         {
@@ -87,11 +87,15 @@ public class InGameScreen extends JPanel implements ActionListener{
         	deadTitle.doDrawingDeadScreen(graphic);
         }
     }
+    public void doDrawingAppearanceBoss(Graphics g)
+    {
+      	g.drawImage(enemyAppearance.getImage(),enemyAppearance.getX(),enemyAppearance.getY(),this);
+     }
     public void doDrawingBoss(Graphics g)
     {
     	g.drawImage(boss.getImage(),boss.getX(),boss.getY(),this);
     }
-    private void drawPlayer(Graphics2D graphic)
+    private void doDrawingPlayer(Graphics2D graphic)
     {
         graphic.drawImage(player.getImage(), 
         		player.getX(), 
@@ -103,9 +107,19 @@ public class InGameScreen extends JPanel implements ActionListener{
         g.setColor(Color.YELLOW);
         g.fillRect(0,0,boss.getHp(),20);
     }
+    public void createBoss()
+    {
+    	enemyAppearance = null;
+    	boss = new Enemy();
+    	pattern = new EnemyPattern(boss,player);
+    	pattern.start();
+    }
     public void actionPerformed(ActionEvent e) 
     {
-    	timeCnt++;
+        if(!EnemyAppearance.EnemyAppearanceCheck && !Enemy.bossAppear)
+        {
+        	createBoss();
+        }
     	if(player.conflict == true)
     	{
 			deadCnt++;
@@ -113,9 +127,13 @@ public class InGameScreen extends JPanel implements ActionListener{
     	}
     	movePlayerStep();
     	moveBulletStep();
-    	if(EnemyPattern.bossAppear)
+    	if(Enemy.bossAppear)
     	{
         	moveEnemyBulletStep();
+    	}
+    	if(EnemyAppearance.EnemyAppearanceCheck)
+    	{
+    		moveEnemyAppearanceStep();
     	}
 
     	repaint();
@@ -123,7 +141,7 @@ public class InGameScreen extends JPanel implements ActionListener{
     private void movePlayerStep() 
     {
     	player.move();
-    	if(EnemyPattern.bossAppear)
+    	if(Enemy.bossAppear)
     	{
         	if((player.getX()+25)>=boss.getX() && (player.getX()+25)<=boss.getWidth()+boss.getX())
         	{
@@ -144,7 +162,7 @@ public class InGameScreen extends JPanel implements ActionListener{
             if (bullet.IsReady()) 
             {
             	bullet.move();
-            	if(EnemyPattern.bossAppear)
+            	if(Enemy.bossAppear)
             	{
                 	if(bullet.getX()>=boss.getX() && bullet.getX()<=boss.getWidth()+boss.getX())
                 	{
@@ -162,6 +180,10 @@ public class InGameScreen extends JPanel implements ActionListener{
             }
         }
     }
+    private void moveEnemyAppearanceStep()
+    {
+    	enemyAppearance.move();
+    }
     private void moveEnemyBulletStep()
     {
         Vector<EnemyBullet> Enemybullets = pattern.getBullet();
@@ -171,6 +193,13 @@ public class InGameScreen extends JPanel implements ActionListener{
         	if(enemyBullet.IsReady())
         	{
         		enemyBullet.move();
+            	if(player.getX()>=enemyBullet.getX() && player.getX()<=enemyBullet.getWidth()+enemyBullet.getX())
+            	{
+            		if(player.getY()>=enemyBullet.getY() && player.getY()<=enemyBullet.getHeight()+enemyBullet.getY())
+            		{
+            			player.conflict = true;
+            		}
+            	}
         	}
         	else
         	{
@@ -180,7 +209,7 @@ public class InGameScreen extends JPanel implements ActionListener{
     }
     private void movebossBarStep()
     {
-    	if(EnemyPattern.bossAppear)
+    	if(Enemy.bossAppear)
     		boss.HP=boss.HP-1;
     }
 }
